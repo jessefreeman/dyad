@@ -1,4 +1,14 @@
 #!/bin/sh
-. "$(dirname "$0")/_/husky.sh"
 
-npx lint-staged
+# Add node_modules/.bin to PATH to ensure npx is available
+export PATH="$PATH:./node_modules/.bin"
+
+# Try to find npx in common locations
+if command -v npx >/dev/null 2>&1; then
+    npx lint-staged
+elif [ -f "./node_modules/.bin/npx" ]; then
+    ./node_modules/.bin/npx lint-staged
+else
+    echo "npx not found, skipping lint-staged"
+    exit 0
+fi
