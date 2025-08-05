@@ -16,7 +16,7 @@ import { isStreamingAtom } from "@/atoms/chatAtoms";
 import { CustomTagState } from "./stateTypes";
 import { DyadOutput } from "./DyadOutput";
 import { DyadProblemSummary } from "./DyadProblemSummary";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 
 interface DyadMarkdownParserProps {
   content: string;

@@ -8,7 +8,7 @@ import {
   SelectValue,
 } from "@/components/ui/select";
 import { toast } from "sonner";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import type { ReleaseChannel } from "@/lib/schemas";
 
 export function ReleaseChannelSelector() {

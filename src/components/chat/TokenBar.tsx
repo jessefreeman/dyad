@@ -10,7 +10,7 @@ import { MessageSquare, Code, Bot, AlignLeft } from "lucide-react";
 import { chatInputValueAtom } from "@/atoms/chatAtoms";
 import { useAtom } from "jotai";
 import { useSettings } from "@/hooks/useSettings";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 
 interface TokenBarProps {
   chatId?: number;

@@ -1,4 +1,4 @@
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 
 import { v4 as uuidv4 } from "uuid";
 

@@ -2,7 +2,7 @@ import type React from "react";
 import type { ReactNode } from "react";
 import { useState } from "react";
 
-import { IpcClient } from "../../ipc/ipc_client";
+import { IpcClient } from "../../lib/universal-ipc";
 
 import { Package, ChevronsUpDown, ChevronsDownUp } from "lucide-react";
 import { CodeHighlight } from "./CodeHighlight";

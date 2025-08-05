@@ -30,6 +30,13 @@ export const getIpcClient = () => {
   return globalIpcClient;
 };
 
+// Re-export a compatible IpcClient class for drop-in replacement
+export class CompatibleIpcClient {
+  static getInstance() {
+    return getIpcClient();
+  }
+}
+
 // Development helper for debugging
 if (typeof window !== "undefined") {
   (window as any).dyadEnv = {

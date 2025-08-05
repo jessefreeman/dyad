@@ -180,11 +180,12 @@ export class IpcClient {
   }
 
   public static getInstance(): IpcClient {
-    // Check if we're in a web environment first
+    // In web environment, this method should not be called directly
+    // Instead, use the environment factory from ../lib/environment
     if (typeof window !== "undefined" && !(window as any).electron) {
-      // In web environment, import and use the factory
-      const { getIpcClient } = require("../lib/environment");
-      return getIpcClient();
+      throw new Error(
+        "IpcClient.getInstance() should not be called in web environment. Use getIpcClient() from lib/environment instead.",
+      );
     }
 
     // In Electron environment, use normal singleton

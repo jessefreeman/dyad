@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from "react";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import type { ProposalResult } from "@/lib/schemas"; // Import Proposal type
 import { proposalResultAtom } from "@/atoms/proposalAtoms";
 import { useAtom } from "jotai";

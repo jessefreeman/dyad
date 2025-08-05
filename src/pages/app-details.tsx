@@ -5,7 +5,7 @@ import {
   appsListAtom,
   selectedAppIdAtom,
 } from "@/atoms/appAtoms";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import { useLoadApps } from "@/hooks/useLoadApps";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";

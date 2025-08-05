@@ -6,7 +6,7 @@ import {
   supabaseErrorAtom,
   selectedSupabaseProjectAtom,
 } from "@/atoms/supabaseAtoms";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 
 export function useSupabase() {
   const [projects, setProjects] = useAtom(supabaseProjectsAtom);

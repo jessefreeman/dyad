@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 
 export const useCheckName = (appName: string) => {
   return useQuery({

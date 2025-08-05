@@ -21,7 +21,7 @@ import type React from "react";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 import { useSettings } from "@/hooks/useSettings";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import {
   chatInputValueAtom,
   chatMessagesAtom,

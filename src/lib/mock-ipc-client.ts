@@ -222,6 +222,16 @@ export class MockIpcClient {
   async getEnvVars(): Promise<Record<string, string | undefined>> {
     return {};
   }
+
+  async getNodejsStatus(): Promise<any> {
+    console.log("[MOCK] getNodejsStatus called");
+    return {
+      nodeVersion: "v18.17.0",
+      pnpmVersion: "8.6.0",
+      nodeDownloadUrl: "https://nodejs.org/download/",
+    };
+  }
+
   async restartApp(
     appId: number,
     _onOutput: any,
@@ -229,6 +239,14 @@ export class MockIpcClient {
   ): Promise<any> {
     console.log("[MOCK] restartApp", appId);
     return { success: true };
+  }
+
+  onDeepLinkReceived(_callback: (data: any) => void): () => void {
+    console.log("[MOCK] onDeepLinkReceived called");
+    // Return a no-op cleanup function since we don't actually listen to anything in mock mode
+    return () => {
+      console.log("[MOCK] onDeepLinkReceived cleanup called");
+    };
   }
 
   // Add any other methods as needed...

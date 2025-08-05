@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 
 export function useLoadAppFile(appId: number | null, filePath: string | null) {
   const [content, setContent] = useState<string | null>(null);

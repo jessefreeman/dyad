@@ -21,7 +21,7 @@ import {
   Power,
 } from "lucide-react";
 import { selectedChatIdAtom } from "@/atoms/chatAtoms";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 
 import { useLoadAppFile } from "@/hooks/useLoadAppFile";
 import {

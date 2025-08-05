@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useQuery, QueryClient } from "@tanstack/react-query";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import { useAtom } from "jotai";
 import { currentAppAtom } from "@/atoms/appAtoms";
 import { App } from "@/ipc/ipc_types";

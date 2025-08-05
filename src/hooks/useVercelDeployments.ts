@@ -1,5 +1,5 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import { VercelDeployment } from "@/ipc/ipc_types";
 
 export function useVercelDeployments(appId: number) {

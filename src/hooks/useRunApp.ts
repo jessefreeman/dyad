@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { atom } from "jotai";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import {
   appOutputAtom,
   appUrlAtom,

@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import type { UserBudgetInfo } from "@/ipc/ipc_types";
 
 const FIVE_MINUTES_IN_MS = 5 * 60 * 1000;

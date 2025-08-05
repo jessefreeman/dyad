@@ -1,4 +1,4 @@
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import { useQuery } from "@tanstack/react-query";
 import type { BranchResult } from "@/ipc/ipc_types";
 

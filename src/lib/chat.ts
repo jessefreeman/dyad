@@ -1,4 +1,4 @@
-import { IpcClient } from "../ipc/ipc_client";
+import { IpcClient } from "./universal-ipc";
 import type { ChatSummary } from "./schemas";
 import type { CreateAppParams, CreateAppResult } from "../ipc/ipc_types";
 

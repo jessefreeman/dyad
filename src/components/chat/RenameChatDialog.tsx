@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import { showError, showSuccess } from "@/lib/toast";
 import {
   Dialog,

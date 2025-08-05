@@ -1,6 +1,6 @@
 import { useCallback } from "react";
 import { atom, useAtom } from "jotai";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import type { TokenCountResult } from "@/ipc/ipc_types";
 
 // Create atoms to store the token count state

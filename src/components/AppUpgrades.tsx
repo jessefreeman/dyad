@@ -2,7 +2,7 @@ import { Button } from "@/components/ui/button";
 import { Loader2 } from "lucide-react";
 import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { Terminal } from "lucide-react";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
 import { AppUpgrade } from "@/ipc/ipc_types";
 

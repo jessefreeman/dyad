@@ -11,7 +11,7 @@ import {
   chatStreamCountAtom,
   isStreamingAtom,
 } from "@/atoms/chatAtoms";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import { isPreviewOpenAtom } from "@/atoms/viewAtoms";
 import type { ChatResponseEnd } from "@/ipc/ipc_types";
 import { useChats } from "./useChats";

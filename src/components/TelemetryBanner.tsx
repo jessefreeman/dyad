@@ -1,4 +1,4 @@
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import React from "react";
 import { Button } from "./ui/button";
 import { atom, useAtom } from "jotai";

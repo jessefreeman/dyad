@@ -13,7 +13,7 @@ import { providerSettingsRoute } from "@/routes/settings/providers/$provider";
 import { settingsRoute } from "@/routes/settings";
 
 import { useState, useEffect, useCallback } from "react";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 import {
   Accordion,
   AccordionContent,

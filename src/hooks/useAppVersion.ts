@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { IpcClient } from "@/ipc/ipc_client";
+import { IpcClient } from "@/lib/universal-ipc";
 
 export function useAppVersion() {
   const [appVersion, setAppVersion] = useState<string | null>(null);
