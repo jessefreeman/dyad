@@ -100,16 +100,166 @@ export class MockIpcClient {
   async getUserSettings(): Promise<any> {
     console.log("[MOCK] getUserSettings called");
     return {
-      theme: "dark",
-      aiProvider: "openai",
-      apiKey: "",
-      fontSize: 14,
+      selectedModel: {
+        providerId: "openai",
+        modelId: "gpt-4",
+        modelName: "GPT-4",
+      },
+      providerSettings: {
+        openai: {
+          apiKey: {
+            value: "",
+            encrypted: false,
+          },
+        },
+        anthropic: {
+          apiKey: {
+            value: "",
+            encrypted: false,
+          },
+        },
+        google: {
+          apiKey: {
+            value: "",
+            encrypted: false,
+          },
+        },
+        auto: {
+          apiKey: {
+            value: "",
+            encrypted: false,
+          },
+        },
+        openrouter: {
+          apiKey: {
+            value: "",
+            encrypted: false,
+          },
+        },
+      },
+      autoApproveChanges: false,
+      telemetryConsent: "unset",
+      hasRunBefore: false,
+      enableDyadPro: false,
     };
   }
 
   async setUserSettings(settings: any): Promise<any> {
     console.log("[MOCK] setUserSettings called", settings);
-    return settings;
+    return { success: true };
+  }
+
+  async getLanguageModelProviders(): Promise<any[]> {
+    console.log("[MOCK] getLanguageModelProviders called");
+    return [
+      {
+        id: "openai",
+        name: "OpenAI",
+        hasFreeTier: false,
+        websiteUrl: "https://openai.com",
+        envVarName: "OPENAI_API_KEY",
+        type: "cloud",
+      },
+      {
+        id: "anthropic",
+        name: "Anthropic",
+        hasFreeTier: false,
+        websiteUrl: "https://anthropic.com",
+        envVarName: "ANTHROPIC_API_KEY",
+        type: "cloud",
+      },
+      {
+        id: "google",
+        name: "Google AI",
+        hasFreeTier: true,
+        websiteUrl: "https://ai.google.dev",
+        envVarName: "GOOGLE_API_KEY",
+        type: "cloud",
+      },
+      {
+        id: "auto",
+        name: "Auto (Dyad Pro)",
+        hasFreeTier: true,
+        type: "cloud",
+      },
+      {
+        id: "openrouter",
+        name: "OpenRouter",
+        hasFreeTier: false,
+        websiteUrl: "https://openrouter.ai",
+        envVarName: "OPENROUTER_API_KEY",
+        type: "cloud",
+      },
+    ];
+  }
+
+  async listVersions({ appId }: { appId: number }): Promise<any[]> {
+    console.log("[MOCK] listVersions called", appId);
+    return [
+      {
+        oid: "abc123def456",
+        message: "Initial commit",
+        timestamp: Date.now() - 86400000, // 1 day ago
+        dbTimestamp: new Date(Date.now() - 86400000).toISOString(),
+      },
+      {
+        oid: "def456ghi789",
+        message: "Added new feature",
+        timestamp: Date.now() - 3600000, // 1 hour ago
+        dbTimestamp: new Date(Date.now() - 3600000).toISOString(),
+      },
+      {
+        oid: "ghi789jkl012",
+        message: "Latest changes",
+        timestamp: Date.now(),
+        dbTimestamp: new Date().toISOString(),
+      },
+    ];
+  }
+
+  async getCurrentBranch(appId: number): Promise<{ branch: string }> {
+    console.log("[MOCK] getCurrentBranch called", appId);
+    return {
+      branch: "main",
+    };
+  }
+
+  async getProposal(chatId: number): Promise<any | null> {
+    console.log("[MOCK] getProposal called", chatId);
+    // Sometimes return null (no proposal), sometimes return a mock proposal
+    if (Math.random() > 0.5) {
+      return null;
+    }
+
+    return {
+      proposal: {
+        type: "code-proposal",
+        title: "Add new feature",
+        securityRisks: [],
+        filesChanged: [
+          {
+            path: "/src/components/NewComponent.tsx",
+            changeType: "create",
+            content: "// New component code here",
+          },
+        ],
+        packagesAdded: ["react-query"],
+        sqlQueries: [],
+      },
+      chatId: chatId,
+      messageId: Date.now(),
+    };
+  }
+
+  async getAppEnvVars(params: {
+    appId: number;
+  }): Promise<{ key: string; value: string }[]> {
+    console.log("[MOCK] getAppEnvVars called", params);
+    return [
+      { key: "NODE_ENV", value: "development" },
+      { key: "REACT_APP_API_URL", value: "http://localhost:3001" },
+      { key: "VITE_APP_TITLE", value: "Mock App" },
+    ];
   }
 
   // Mock streaming with fake delay

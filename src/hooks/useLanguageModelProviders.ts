@@ -16,7 +16,12 @@ export function useLanguageModelProviders() {
   });
 
   const isProviderSetup = (provider: string) => {
-    const providerSettings = settings?.providerSettings[provider];
+    // Early return if settings haven't loaded yet
+    if (!settings || !settings.providerSettings) {
+      return false;
+    }
+
+    const providerSettings = settings.providerSettings[provider];
     if (queryResult.isLoading) {
       return false;
     }
@@ -31,6 +36,10 @@ export function useLanguageModelProviders() {
   };
 
   const isAnyProviderSetup = () => {
+    // Early return if settings haven't loaded yet
+    if (!settings || !settings.providerSettings) {
+      return false;
+    }
     return cloudProviders.some((provider) => isProviderSetup(provider));
   };
 
