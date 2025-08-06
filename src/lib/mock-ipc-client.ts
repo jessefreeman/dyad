@@ -262,6 +262,41 @@ export class MockIpcClient {
     ];
   }
 
+  async countTokens(params: { chatId: number; input: string }): Promise<any> {
+    console.log("[MOCK] countTokens called", params);
+    // Return realistic mock token counts
+    const inputLength = params.input.length;
+    const estimatedInputTokens = Math.ceil(inputLength / 4); // Rough estimate: ~4 chars per token
+
+    return {
+      totalTokens: estimatedInputTokens + 150, // Add some for context
+      messageHistoryTokens: 50,
+      codebaseTokens: 75,
+      inputTokens: estimatedInputTokens,
+      systemPromptTokens: 25,
+      contextWindow: 8000,
+    };
+  }
+
+  async rejectProposal(params: {
+    chatId: number;
+    messageId: number;
+  }): Promise<void> {
+    console.log("[MOCK] rejectProposal called", params);
+    // Mock rejecting a proposal - just log it
+  }
+
+  async approveProposal(params: {
+    chatId: number;
+    messageId: number;
+  }): Promise<{ extraFiles?: string[]; extraFilesError?: string }> {
+    console.log("[MOCK] approveProposal called", params);
+    // Mock approving a proposal - return success with no extra files
+    return {
+      extraFiles: [],
+    };
+  }
+
   // Mock streaming with fake delay
   streamMessage(prompt: string, options: any): void {
     console.log("[MOCK] streamMessage called", prompt, options);
@@ -397,6 +432,456 @@ export class MockIpcClient {
     return () => {
       console.log("[MOCK] onDeepLinkReceived cleanup called");
     };
+  }
+
+  // === Missing core IPC methods ===
+
+  async setAppEnvVars(params: {
+    appId: number;
+    envVars: { key: string; value: string }[];
+  }): Promise<void> {
+    console.log("[MOCK] setAppEnvVars called", params);
+  }
+
+  async updateChat(params: { chatId: number; title?: string }): Promise<void> {
+    console.log("[MOCK] updateChat called", params);
+  }
+
+  async deleteMessages(chatId: number): Promise<void> {
+    console.log("[MOCK] deleteMessages called", chatId);
+  }
+
+  async respondToAppInput(params: {
+    appId: number;
+    input: string;
+  }): Promise<void> {
+    console.log("[MOCK] respondToAppInput called", params);
+  }
+
+  async revertVersion(params: { appId: number; oid: string }): Promise<void> {
+    console.log("[MOCK] revertVersion called", params);
+  }
+
+  async checkoutVersion(params: { appId: number; oid: string }): Promise<void> {
+    console.log("[MOCK] checkoutVersion called", params);
+  }
+
+  async renameApp(params: { appId: number; newName: string }): Promise<void> {
+    console.log("[MOCK] renameApp called", params);
+  }
+
+  async copyApp(params: {
+    appId: number;
+    newAppName: string;
+  }): Promise<{ app: any }> {
+    console.log("[MOCK] copyApp called", params);
+    return {
+      app: {
+        id: Date.now(),
+        name: params.newAppName,
+        framework: "react",
+        path: `/mock-${params.newAppName}`,
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        status: "stopped",
+      },
+    };
+  }
+
+  async resetAll(): Promise<void> {
+    console.log("[MOCK] resetAll called");
+  }
+
+  async addDependency(params: {
+    appId: number;
+    packageName: string;
+    version?: string;
+  }): Promise<void> {
+    console.log("[MOCK] addDependency called", params);
+  }
+
+  // === GitHub Integration ===
+
+  startGithubDeviceFlow(appId: number | null): void {
+    console.log("[MOCK] startGithubDeviceFlow called", appId);
+  }
+
+  onGithubDeviceFlowUpdate(_callback: (data: any) => void): () => void {
+    console.log("[MOCK] onGithubDeviceFlowUpdate called");
+    return () => console.log("[MOCK] onGithubDeviceFlowUpdate cleanup");
+  }
+
+  onGithubDeviceFlowSuccess(_callback: (data: any) => void): () => void {
+    console.log("[MOCK] onGithubDeviceFlowSuccess called");
+    return () => console.log("[MOCK] onGithubDeviceFlowSuccess cleanup");
+  }
+
+  onGithubDeviceFlowError(_callback: (error: any) => void): () => void {
+    console.log("[MOCK] onGithubDeviceFlowError called");
+    return () => console.log("[MOCK] onGithubDeviceFlowError cleanup");
+  }
+
+  async listGithubRepos(): Promise<any[]> {
+    console.log("[MOCK] listGithubRepos called");
+    return [
+      {
+        id: 1,
+        name: "mock-repo-1",
+        full_name: "user/mock-repo-1",
+        private: false,
+      },
+      {
+        id: 2,
+        name: "mock-repo-2",
+        full_name: "user/mock-repo-2",
+        private: true,
+      },
+    ];
+  }
+
+  async getGithubRepoBranches(params: {
+    owner: string;
+    repo: string;
+  }): Promise<any[]> {
+    console.log("[MOCK] getGithubRepoBranches called", params);
+    return [
+      { name: "main", commit: { sha: "abc123" } },
+      { name: "develop", commit: { sha: "def456" } },
+    ];
+  }
+
+  async connectToExistingGithubRepo(params: any): Promise<void> {
+    console.log("[MOCK] connectToExistingGithubRepo called", params);
+  }
+
+  async checkGithubRepoAvailable(params: {
+    owner: string;
+    repo: string;
+  }): Promise<boolean> {
+    console.log("[MOCK] checkGithubRepoAvailable called", params);
+    return true;
+  }
+
+  async createGithubRepo(params: any): Promise<any> {
+    console.log("[MOCK] createGithubRepo called", params);
+    return {
+      id: Date.now(),
+      name: params.name,
+      full_name: `user/${params.name}`,
+    };
+  }
+
+  async syncGithubRepo(params: { appId: number }): Promise<void> {
+    console.log("[MOCK] syncGithubRepo called", params);
+  }
+
+  async disconnectGithubRepo(appId: number): Promise<void> {
+    console.log("[MOCK] disconnectGithubRepo called", appId);
+  }
+
+  // === Vercel Integration ===
+
+  async saveVercelAccessToken(_params: { token: string }): Promise<void> {
+    console.log("[MOCK] saveVercelAccessToken called");
+  }
+
+  async listVercelProjects(): Promise<any[]> {
+    console.log("[MOCK] listVercelProjects called");
+    return [
+      { id: "mock-project-1", name: "Mock Project 1" },
+      { id: "mock-project-2", name: "Mock Project 2" },
+    ];
+  }
+
+  async connectToExistingVercelProject(params: any): Promise<void> {
+    console.log("[MOCK] connectToExistingVercelProject called", params);
+  }
+
+  async isVercelProjectAvailable(params: { name: string }): Promise<boolean> {
+    console.log("[MOCK] isVercelProjectAvailable called", params);
+    return true;
+  }
+
+  async createVercelProject(params: any): Promise<any> {
+    console.log("[MOCK] createVercelProject called", params);
+    return { id: `mock-${Date.now()}`, name: params.name };
+  }
+
+  async getVercelDeployments(params: { appId: number }): Promise<any[]> {
+    console.log("[MOCK] getVercelDeployments called", params);
+    return [
+      {
+        uid: "mock-deployment-1",
+        url: "https://mock-app-1.vercel.app",
+        state: "READY",
+      },
+    ];
+  }
+
+  async disconnectVercelProject(params: { appId: number }): Promise<void> {
+    console.log("[MOCK] disconnectVercelProject called", params);
+  }
+
+  // === Supabase Integration ===
+
+  async listSupabaseProjects(): Promise<any[]> {
+    console.log("[MOCK] listSupabaseProjects called");
+    return [{ id: "mock-supabase-1", name: "Mock Supabase Project" }];
+  }
+
+  async setSupabaseAppProject(params: {
+    appId: number;
+    projectId: string;
+  }): Promise<void> {
+    console.log("[MOCK] setSupabaseAppProject called", params);
+  }
+
+  async unsetSupabaseAppProject(appId: number): Promise<void> {
+    console.log("[MOCK] unsetSupabaseAppProject called", appId);
+  }
+
+  async fakeHandleSupabaseConnect(params: {
+    code: string;
+    state: string;
+  }): Promise<void> {
+    console.log("[MOCK] fakeHandleSupabaseConnect called", params);
+  }
+
+  async fakeHandleNeonConnect(): Promise<void> {
+    console.log("[MOCK] fakeHandleNeonConnect called");
+  }
+
+  async createNeonProject(params: {
+    appId: number;
+    name: string;
+  }): Promise<any> {
+    console.log("[MOCK] createNeonProject called", params);
+    return { id: `mock-neon-${Date.now()}`, name: params.name };
+  }
+
+  async getNeonProject(params: { appId: number }): Promise<any> {
+    console.log("[MOCK] getNeonProject called", params);
+    return { id: "mock-neon-1", name: "Mock Neon DB" };
+  }
+
+  // === System & Debug ===
+
+  async getSystemDebugInfo(): Promise<any> {
+    console.log("[MOCK] getSystemDebugInfo called");
+    return {
+      platform: "web",
+      version: "0.16.0-web",
+      nodeVersion: "v18.17.0",
+    };
+  }
+
+  async getChatLogs(chatId: number): Promise<any> {
+    console.log("[MOCK] getChatLogs called", chatId);
+    return {
+      logs: [`Mock log entry for chat ${chatId}`],
+    };
+  }
+
+  async uploadToSignedUrl(params: { url: string; file: File }): Promise<void> {
+    console.log("[MOCK] uploadToSignedUrl called", params);
+  }
+
+  // === Local Models ===
+
+  async listLocalOllamaModels(): Promise<any[]> {
+    console.log("[MOCK] listLocalOllamaModels called");
+    return [
+      { name: "llama2", size: "3.8GB" },
+      { name: "codellama", size: "3.8GB" },
+    ];
+  }
+
+  async listLocalLMStudioModels(): Promise<any[]> {
+    console.log("[MOCK] listLocalLMStudioModels called");
+    return [{ name: "mock-lm-studio-model", size: "4.2GB" }];
+  }
+
+  // === Language Model Providers ===
+
+  async getLanguageModels(params: { providerId: string }): Promise<any[]> {
+    console.log("[MOCK] getLanguageModels called", params);
+    return [
+      { id: "gpt-4", name: "GPT-4", providerId: params.providerId },
+      {
+        id: "gpt-3.5-turbo",
+        name: "GPT-3.5 Turbo",
+        providerId: params.providerId,
+      },
+    ];
+  }
+
+  async getLanguageModelsByProviders(): Promise<Record<string, any[]>> {
+    console.log("[MOCK] getLanguageModelsByProviders called");
+    return {
+      openai: [
+        { id: "gpt-4", name: "GPT-4" },
+        { id: "gpt-3.5-turbo", name: "GPT-3.5 Turbo" },
+      ],
+      anthropic: [{ id: "claude-3-opus", name: "Claude 3 Opus" }],
+    };
+  }
+
+  async createCustomLanguageModelProvider(params: any): Promise<any> {
+    console.log("[MOCK] createCustomLanguageModelProvider called", params);
+    return { id: `custom-${Date.now()}`, name: params.name };
+  }
+
+  async createCustomLanguageModel(params: any): Promise<any> {
+    console.log("[MOCK] createCustomLanguageModel called", params);
+    return { id: `custom-model-${Date.now()}`, name: params.name };
+  }
+
+  async deleteCustomLanguageModel(modelId: string): Promise<void> {
+    console.log("[MOCK] deleteCustomLanguageModel called", modelId);
+  }
+
+  // === App Management ===
+
+  async selectAppFolder(): Promise<{ path: string; canceled: boolean }> {
+    console.log("[MOCK] selectAppFolder called");
+    return { path: "/mock/selected/folder", canceled: false };
+  }
+
+  async checkAiRules(params: { appId: number }): Promise<boolean> {
+    console.log("[MOCK] checkAiRules called", params);
+    return true;
+  }
+
+  async importApp(params: { path: string; appName: string }): Promise<any> {
+    console.log("[MOCK] importApp called", params);
+    return {
+      app: {
+        id: Date.now(),
+        name: params.appName,
+        path: params.path,
+        framework: "react",
+        createdAt: new Date().toISOString(),
+        updatedAt: new Date().toISOString(),
+        status: "stopped",
+      },
+    };
+  }
+
+  async renameBranch(params: {
+    appId: number;
+    oldName: string;
+    newName: string;
+  }): Promise<void> {
+    console.log("[MOCK] renameBranch called", params);
+  }
+
+  // === User Budget & Context ===
+
+  async getUserBudget(): Promise<any | null> {
+    console.log("[MOCK] getUserBudget called");
+    return {
+      budget: 100,
+      used: 25,
+      remaining: 75,
+    };
+  }
+
+  async getChatContextResults(params: { chatId: number }): Promise<any> {
+    console.log("[MOCK] getChatContextResults called", params);
+    return {
+      results: ["Mock context result 1", "Mock context result 2"],
+    };
+  }
+
+  async setChatContext(params: {
+    chatId: number;
+    context: any;
+  }): Promise<void> {
+    console.log("[MOCK] setChatContext called", params);
+  }
+
+  // === App Upgrades ===
+
+  async getAppUpgrades(params: { appId: number }): Promise<any[]> {
+    console.log("[MOCK] getAppUpgrades called", params);
+    return [
+      {
+        id: "upgrade-1",
+        name: "React 18 Upgrade",
+        description: "Upgrade to React 18",
+      },
+    ];
+  }
+
+  async executeAppUpgrade(params: {
+    appId: number;
+    upgradeId: string;
+  }): Promise<void> {
+    console.log("[MOCK] executeAppUpgrade called", params);
+  }
+
+  // === Capacitor (Mobile) ===
+
+  async isCapacitor(params: { appId: number }): Promise<boolean> {
+    console.log("[MOCK] isCapacitor called", params);
+    return false;
+  }
+
+  async syncCapacitor(params: { appId: number }): Promise<void> {
+    console.log("[MOCK] syncCapacitor called", params);
+  }
+
+  async openIos(params: { appId: number }): Promise<void> {
+    console.log("[MOCK] openIos called", params);
+  }
+
+  async openAndroid(params: { appId: number }): Promise<void> {
+    console.log("[MOCK] openAndroid called", params);
+  }
+
+  // === Problem Checking ===
+
+  async checkProblems(params: { appId: number }): Promise<any[]> {
+    console.log("[MOCK] checkProblems called", params);
+    return [
+      {
+        type: "warning",
+        message: "Mock warning: Consider updating dependencies",
+      },
+    ];
+  }
+
+  // === Templates ===
+
+  async getTemplates(): Promise<any[]> {
+    console.log("[MOCK] getTemplates called");
+    return [
+      {
+        id: "react-basic",
+        name: "React Basic",
+        description: "A basic React template",
+      },
+      { id: "next-js", name: "Next.js", description: "A Next.js template" },
+    ];
+  }
+
+  // === Portal Migration ===
+
+  async portalMigrateCreate(params: { appId: number }): Promise<void> {
+    console.log("[MOCK] portalMigrateCreate called", params);
+  }
+
+  // === Release Notes ===
+
+  async doesReleaseNoteExist(version: string): Promise<boolean> {
+    console.log("[MOCK] doesReleaseNoteExist called", version);
+    return true;
+  }
+
+  // === Event Handlers ===
+
+  cancelChatStream(chatId: number): void {
+    console.log("[MOCK] cancelChatStream called", chatId);
   }
 
   // Add any other methods as needed...
